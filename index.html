@@ -119,7 +119,10 @@
             rel="preload"
             href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"
             as="style"
-            onload="this.onload=null;this.rel='stylesheet'"
+            onload="
+                this.onload = null;
+                this.rel = 'stylesheet';
+            "
         />
         <noscript
             ><link
@@ -142,7 +145,10 @@
             as="style"
             integrity="sha384-oaMLBGEzBOJx3UHwac0cVndtX5fxGQIfnAeFZ35RTgqPcYlbprH9o9PUV/F8Le07"
             crossorigin="anonymous"
-            onload="this.onload=null;this.rel='stylesheet'"
+            onload="
+                this.onload = null;
+                this.rel = 'stylesheet';
+            "
         />
         <noscript
             ><link
@@ -184,7 +190,10 @@
             rel="preload"
             href="css/themes.css?v=fixed"
             as="style"
-            onload="this.onload=null;this.rel='stylesheet'"
+            onload="
+                this.onload = null;
+                this.rel = 'stylesheet';
+            "
         />
         <noscript><link rel="stylesheet" href="css/themes.css?v=fixed" /></noscript>
         <script>
@@ -294,24 +303,7 @@
                     />
                 </div>
             </div>
-            <div
-                class="popupMsg"
-                id="errorText"
-                tabindex="-1"
-                aria-live="assertive"
-                role="alert"
-                style="
-                    position: absolute;
-                    width: 1px;
-                    height: 1px;
-                    padding: 0;
-                    margin: -1px;
-                    overflow: hidden;
-                    clip: rect(0 0 0 0);
-                    white-space: nowrap;
-                    border: 0;
-                "
-            >
+            <div class="popupMsg" id="errorText" tabindex="-1" aria-live="assertive" role="alert">
                 <div class="contentWrapper">
                     <span id="errorTextContent"></span>
                     <img
@@ -1312,7 +1304,7 @@
 
                 iconCode.textContent = isFullscreen ? "\ue5d1" : "\ue5d0";
 
-                if (fullScreenBtn && typeof _ === 'function') {
+                if (fullScreenBtn && typeof _ === "function") {
                     var tooltipText = isFullscreen ? _("Exit Fullscreen") : _("Enter Fullscreen");
                     fullScreenBtn.setAttribute("data-tooltip", tooltipText);
                     if (window.jQuery) {

@@ -6015,32 +6015,44 @@ class Activity {
                 const toX = this.blocks.blockList[blk].container.x + this.blocksContainer.x;
                 const toY = this.blocks.blockList[blk].container.y + this.blocksContainer.y;
 
-                if (this.errorMsgArrow === null) {
-                    this.errorMsgArrow = new createjs.Container();
-                    this.stage.addChild(this.errorMsgArrow);
+                // Calculate the distance for the arrow
+                const dx = toX - fromX;
+                const dy = toY - fromY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                // Only draw arrow if block is within reasonable distance (avoid infinite arrows)
+                const maxArrowDistance = Math.max(this.canvas.width, this.canvas.height) * 1.5;
+                if (distance <= maxArrowDistance) {
+                    if (this.errorMsgArrow === null) {
+                        this.errorMsgArrow = new createjs.Container();
+                        this.stage.addChild(this.errorMsgArrow);
+                    } else {
+                        // Clear previous arrow before drawing new one
+                        this.errorMsgArrow.removeAllChildren();
+                    }
+
+                    const line = new createjs.Shape();
+                    this.errorMsgArrow.addChild(line);
+                    line.graphics
+                        .setStrokeStyle(4)
+                        .beginStroke("#ff0031")
+                        .moveTo(fromX, fromY)
+                        .lineTo(toX, toY);
+                    this.stage.setChildIndex(this.errorMsgArrow, this.stage.children.length - 1);
+
+                    const angle = (Math.atan2(toX - fromX, fromY - toY) / Math.PI) * 180;
+                    const head = new createjs.Shape();
+                    this.errorMsgArrow.addChild(head);
+                    head.graphics
+                        .setStrokeStyle(4)
+                        .beginStroke("#ff0031")
+                        .moveTo(-10, 18)
+                        .lineTo(0, 0)
+                        .lineTo(10, 18);
+                    head.x = toX;
+                    head.y = toY;
+                    head.rotation = angle;
                 }
-
-                const line = new createjs.Shape();
-                this.errorMsgArrow.addChild(line);
-                line.graphics
-                    .setStrokeStyle(4)
-                    .beginStroke("#ff0031")
-                    .moveTo(fromX, fromY)
-                    .lineTo(toX, toY);
-                this.stage.setChildIndex(this.errorMsgArrow, this.stage.children.length - 1);
-
-                const angle = (Math.atan2(toX - fromX, fromY - toY) / Math.PI) * 180;
-                const head = new createjs.Shape();
-                this.errorMsgArrow.addChild(head);
-                head.graphics
-                    .setStrokeStyle(4)
-                    .beginStroke("#ff0031")
-                    .moveTo(-10, 18)
-                    .lineTo(0, 0)
-                    .lineTo(10, 18);
-                head.x = toX;
-                head.y = toY;
-                head.rotation = angle;
             }
 
             switch (msg) {
@@ -6146,7 +6158,7 @@ class Activity {
          */
         this.hideErrorText = () => {
             if (this.errorText) {
-                this.errorText.style.display = "none";
+                this.errorText.classList.remove("show");
             }
         };
         /*
